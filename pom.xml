@@ -4,9 +4,10 @@
   <groupId>com.mycompany.app</groupId>
   <artifactId>my-app</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>my-app</name>
   <url>https://maven.apache.org</url>
+
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -15,9 +16,11 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
   <build>
     <pluginManagement>
       <plugins>
@@ -31,9 +34,10 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
     <plugins>
+      <!-- Build executable JAR -->
       <plugin>
-        <!-- Build an executable JAR -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.4.2</version>
@@ -47,6 +51,8 @@
           </archive>
         </configuration>
       </plugin>
+
+      <!-- Enforce Maven & Java versions -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -70,6 +76,21 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- 🔹 Plugin for auto-increment version -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>2.16.2</version>
+      </plugin>
+
+      <!-- 🔹 Plugin to parse version parts -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.5.0</version>
+      </plugin>
+
     </plugins>
   </build>
 </project>
