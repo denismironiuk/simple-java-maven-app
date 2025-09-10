@@ -3,6 +3,8 @@ name: CI/CD Java with Maven
 on:
   push:
     branches: [ "master" ]
+permissions:
+  contents: write 
 
 jobs:
   build:
@@ -12,6 +14,9 @@ jobs:
       
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       
       - name: Set up JDK
@@ -27,8 +32,6 @@ jobs:
               org.codehaus.mojo:versions-maven-plugin:2.16.2:set \
               "-DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}" \
               org.codehaus.mojo:versions-maven-plugin:2.16.2:commit
-
-
 
     
       - name: Build JAR
@@ -53,5 +56,13 @@ jobs:
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/simple-java-maven-app:${{ env.PROJECT_VERSION }}
 
+      - name: Commit new version
+        if: success()    
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add pom.xml
+          git commit -m "Bump version to ${{ env.PROJECT_VERSION }} [skip ci]" || echo "No changes"
+          git push origin HEAD:${{ github.ref }}
     
      
