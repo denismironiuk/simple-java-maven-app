@@ -30,8 +30,6 @@ jobs:
       - name: Build JAR
         run: mvn clean package -DskipTests
 
-      - name: Debug secrets   # 👈 вот здесь
-        run: echo "User=${{ secrets.DOCKERHUB_USERNAME }}
 
       - name: Log in to DockerHub
         uses: docker/login-action@v3
